@@ -1,0 +1,68 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.main {
+    padding-bottom: 60px;
+}
+
+.dropdown-menu {
+    background-color: #46598f !important;
+}
+
+.navbar {
+    justify-content: flex-start !important;
+}
+
+.navbar-collapse {
+    justify-content: flex-end;
+}
+
+.text-size {
+    font-size: larger;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1rem;
+    }
+    .form-label {
+        font-size: 0.9rem;
+    }
+    .btn {
+        font-size: 0.9rem;
+    }
+}
+
+@media (min-width: 769px) {
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+    .form-label {
+        font-size: 1rem;
+    }
+    .btn {
+        font-size: 1rem;
+    }
+}
+/* Ensure the container takes the width of its parent */
+.embed-responsive {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+.embed-responsive .embed-responsive-item {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
