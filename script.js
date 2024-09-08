@@ -88,3 +88,73 @@ function showYoutubeSearch(movieName) {
         <a href="${youtubeSearchUrl}" target="_blank" class="btn btn-outline-danger">Search for trailer on youtube</a>
     `;
 }
+// Your API key
+const apiKey = '9d34daae9a0f47109150e527315df223';
+
+// Fetch the top 10 trending movies
+function fetchTrendingMovies() {
+    fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${apiKey}`)
+        .then(response => response.json())
+        .then(data => {
+            const trendingMovies = data.results.slice(0, 10); // Top 10 movies
+            renderTrendingMovies(trendingMovies);
+        })
+        .catch(error => console.error('Error fetching trending movies:', error));
+}
+
+// Fetch the top 10 trending TV series
+function fetchTrendingSeries() {
+    fetch(`https://api.themoviedb.org/3/trending/tv/day?api_key=${apiKey}`)
+        .then(response => response.json())
+        .then(data => {
+            const trendingSeries = data.results.slice(0, 10); // Top 10 series
+            renderTrendingSeries(trendingSeries);
+        })
+        .catch(error => console.error('Error fetching trending series:', error));
+}
+
+// Render the top 10 trending movies
+function renderTrendingMovies(movies) {
+    const movieContainer = document.getElementById('trendingMovies');
+    movieContainer.innerHTML = '';
+
+    movies.forEach(movie => {
+        const movieHTML = `
+            <div class="col-12 col-md-4 col-lg-3 mb-4">
+                <div class="card">
+                    <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" class="card-img-top" alt="${movie.title}">
+                    <div class="card-body">
+                        <h5 class="card-title">${movie.title}</h5>
+                        <p class="card-text">Release Date: ${new Date(movie.release_date).toDateString()}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        movieContainer.innerHTML += movieHTML;
+    });
+}
+
+// Render the top 10 trending series
+function renderTrendingSeries(series) {
+    const seriesContainer = document.getElementById('trendingSeries');
+    seriesContainer.innerHTML = '';
+
+    series.forEach(tv => {
+        const seriesHTML = `
+            <div class="col-12 col-md-4 col-lg-3 mb-4">
+                <div class="card">
+                    <img src="https://image.tmdb.org/t/p/w500${tv.poster_path}" class="card-img-top" alt="${tv.name}">
+                    <div class="card-body">
+                        <h5 class="card-title">${tv.name}</h5>
+                        <p class="card-text">First Air Date: ${new Date(tv.first_air_date).toDateString()}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        seriesContainer.innerHTML += seriesHTML;
+    });
+}
+
+// Call the functions to fetch trending movies and series when the page loads
+fetchTrendingMovies();
+fetchTrendingSeries();

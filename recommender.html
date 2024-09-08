@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles2.css">
+    <title>MOVIE SEARCHER</title>
+    <style>
+        .scroll-container-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden; /* Hide overflowing content */
+        }
+
+        .scroll-container {
+            display: flex;
+            overflow-x: auto; /* Enable horizontal scrolling */
+            scroll-snap-type: x mandatory; /* Snap to items while scrolling */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile devices */
+            padding: 10px 0; /* Add some padding for aesthetics */
+        }
+
+        .card {
+            flex: 0 0 auto; /* Prevent the cards from shrinking and allow them to maintain their width */
+            margin-right: 16px; /* Add space between cards */
+            width: 200px; /* Adjust the width of each card */
+            scroll-snap-align: start; /* Align each card at the start of the container */
+        }
+
+        .card-img-top {
+            width: 100%; /* Ensure the image takes full width of the card */
+            height: auto; /* Maintain aspect ratio */
+            max-height: 300px; /* Set a maximum height for images */
+            object-fit: contain; /* Ensure the entire image is visible */
+        }
+
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            padding: 10px;
+            z-index: 10;
+        }
+
+        .arrow-left {
+            left: 10px;
+        }
+
+        .arrow-right {
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+  <div class="main">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Use menu on the right to navigate--></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown dropstart">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                MENU
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                <li><a class="dropdown-item" href="index.html">MOVIE SEARCH</a></li>
+                <li><a class="dropdown-item" href="review.html">LEAVE A REVIEW</a></li>
+                <li><a class="dropdown-item" href="reviews.html">REVIEWS</a></li>
+                <li><a class="dropdown-item" href="trending.html">TRENDING MOVIES</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container mt-5">
+        <h2 class="text-center">Top 10 Trending Movies</h2>
+        <div class="scroll-container-wrapper mt-4">
+            <button class="arrow arrow-left" onclick="scrollLeft()">&#9664;</button>
+            <div id="trendingMovies" class="scroll-container">
+                <!-- Movie cards will be dynamically added here -->
+            </div>
+            <button class="arrow arrow-right" onclick="scrollRight()">&#9654;</button>
+        </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script>
+      const apiKey = '9d34daae9a0f47109150e527315df223'; // Your TMDB API key
+
+      function fetchTrendingMovies() {
+          fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}`)
+              .then(response => response.json())
+              .then(data => {
+                  const movies = data.results;
+                  const container = document.getElementById('trendingMovies');
+                  container.innerHTML = ''; // Clear existing content
+
+                  movies.forEach(movie => {
+                      const imageUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+                      const cardHtml = `
+                          <div class="card">
+                              <img src="${imageUrl}" class="card-img-top" alt="${movie.title} Poster">
+                              <div class="card-body">
+                                  <h5 class="card-title">${movie.title}</h5>
+                                  <p class="card-text">Release Date: ${movie.release_date}</p>
+                              </div>
+                          </div>
+                      `;
+                      container.innerHTML += cardHtml;
+                  });
+              })
+              .catch(error => console.error('Error fetching trending movies:', error));
+      }
+
+      function scrollLeft() {
+          const container = document.getElementById('trendingMovies');
+          container.scrollBy({
+              left: -200, // Adjust this value as needed
+              behavior: 'smooth'
+          });
+      }
+
+      function scrollRight() {
+          const container = document.getElementById('trendingMovies');
+          container.scrollBy({
+              left: 200, // Adjust this value as needed
+              behavior: 'smooth'
+          });
+      }
+
+      // Call the function to load trending movies
+      fetchTrendingMovies();
+  </script>
+</body>
+</html>

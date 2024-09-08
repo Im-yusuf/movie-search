@@ -1,0 +1,12 @@
+.card {
+    /* Set up aspect ratio for the card container */
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}
+
+.card-img-top {
+    width: 100%; /* Ensure the image takes full width of the container */
+    height: auto; /* Allow height to adjust based on the width */
+    object-fit: contain; /* Ensure the entire image is visible */
+}
