@@ -85,6 +85,6 @@ function showYoutubeSearch(movieName) {
 
     document.getElementById('trailer').innerHTML = `
         <p>Sorry, couldn't find a trailer for this movie.</p>
-        <a href="${youtubeSearchUrl}" target="_blank" class="btn btn-primary">Search for trailer on youtube</a>
+        <a href="${youtubeSearchUrl}" target="_blank" class="btn btn-outline-danger">Search for trailer on youtube</a>
     `;
 }
