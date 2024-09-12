@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trending Content</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles2.css">
+</head>
+<body>
+    <div class="main">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">Use menu on the right to navigate--></a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                <ul class="navbar-nav">
+                  <li class="nav-item dropdown dropstart">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">MENU</a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                      <li><a class="dropdown-item" href="index.html">MOVIE SEARCH</a></li>
+                      <li><a class="dropdown-item" href="recommender.html">TRENDING</a></li>
+                      <li><a class="dropdown-item" href="review.html">LEAVE A REVIEW</a></li>
+                      <li><a class="dropdown-item" href="reviews.html">REVIEWS</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        <div class="container mt-5">
+            <h2 class="text-center">Trending Movies</h2>
+            <div class="scroll-container-wrapper mt-4">
+                <!-- Left Arrow for Movies -->
+                <button class="arrow arrow-left" onclick="scrollContentLeft('trendingMovies')">&#9664;</button>
+                <div id="trendingMovies" class="scroll-container">
+                    <!-- Movie cards will be dynamically added here -->
+                </div>
+                <!-- Right Arrow for Movies -->
+                <button class="arrow arrow-right" onclick="scrollContentRight('trendingMovies')">&#9654;</button>
+            </div>
+
+            <h2 class="text-center mt-5">Trending TV Series</h2>
+            <div class="scroll-container-wrapper mt-4">
+                <!-- Left Arrow for TV Series -->
+                <button class="arrow arrow-left" onclick="scrollContentLeft('trendingTVSeries')">&#9664;</button>
+                <div id="trendingTVSeries" class="scroll-container">
+                    <!-- TV Series cards will be dynamically added here -->
+                </div>
+                <!-- Right Arrow for TV Series -->
+                <button class="arrow arrow-right" onclick="scrollContentRight('trendingTVSeries')">&#9654;</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script>
+        const apiKey = '9d34daae9a0f47109150e527315df223';
+        // function  to fetch trending movies
+        function fetchTrendingMovies() {
+            fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}`)
+                .then(response => response.json())
+                .then(data => {
+                    const movies = data.results;
+                    const container = document.getElementById('trendingMovies');
+                    container.innerHTML = '';
+
+                    movies.forEach(movie => {
+                        const imageUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+                        const cardHtml = `
+                            <div class="card" onclick="this.classList.toggle('flip')">
+                                <div class="card-inner">
+                                    <div class="card-front">
+                                        <img src="${imageUrl}" class="card-img-top" alt="${movie.title} Poster">
+                                        <h5 class="card-title">${movie.title}</h5>
+                                        <p class="card-text">Release Date: ${movie.release_date}</p>
+                                    </div>
+                                    <div class="card-back">
+                                        <p class="card-text">${movie.overview}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        container.innerHTML += cardHtml;
+                    });
+                })
+        }
+
+        // function for retrieving trending tv series
+        function fetchTrendingTVSeries() {
+            fetch(`https://api.themoviedb.org/3/trending/tv/week?api_key=${apiKey}`)
+                .then(response => response.json())
+                .then(data => {
+                    const series = data.results;
+                    const container = document.getElementById('trendingTVSeries');
+                    container.innerHTML = ''; // clear content if any inside
+
+                    series.forEach(tvShow => {
+                        const imageUrl = `https://image.tmdb.org/t/p/w500${tvShow.poster_path}`;
+                        const cardHtml = `
+                            <div class="card" onclick="this.classList.toggle('flip')">
+                                <div class="card-inner">
+                                    <div class="card-front">
+                                        <img src="${imageUrl}" class="card-img-top" alt="${tvShow.name} Poster">
+                                        <h5 class="card-title">${tvShow.name}</h5>
+                                        <p class="card-text">First Air Date: ${tvShow.first_air_date}</p>
+                                    </div>
+                                    <div class="card-back">
+                                        <p class="card-text">${tvShow.overview}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        container.innerHTML += cardHtml;
+                    });
+                })
+        }
+
+        //scrolling for the moveis and tv shows
+        function scrollContentLeft(containerId) {
+            const container = document.getElementById(containerId);
+            container.scrollBy({
+                left: -500,
+                behavior: 'smooth'
+            });
+        }
+
+        function scrollContentRight(containerId) {
+            const container = document.getElementById(containerId);
+            container.scrollBy({
+                left: 500, 
+                behavior: 'smooth'
+            });
+        }
+        //call the content to be displayed
+        fetchTrendingMovies();
+        fetchTrendingTVSeries();
+    </script>
+</body>
+</html>
