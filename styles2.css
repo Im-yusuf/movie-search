@@ -13,7 +13,6 @@ body {
 .navbar {
     justify-content: flex-start !important;
 }
-
 .navbar-collapse {
     justify-content: flex-end;
 }
