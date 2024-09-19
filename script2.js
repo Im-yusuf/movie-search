@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
     //set variables to be values inside the areas with the id's
     const reviewForm = $('#reviewForm');

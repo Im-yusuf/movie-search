@@ -1,12 +1,13 @@
 const apiKey = '9d34daae9a0f47109150e527315df223';
-// function  to fetch trending movies
+
+// fetch the movies
 function fetchTrendingMovies() {
     fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}`)
         .then(response => response.json())
         .then(data => {
             const movies = data.results;
             const container = document.getElementById('trendingMovies');
-            container.innerHTML = '';
+            container.innerHTML = ''; // lear existing content
 
             movies.forEach(movie => {
                 const imageUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
@@ -22,20 +23,22 @@ function fetchTrendingMovies() {
                                 <p class="card-text">${movie.overview}</p>
                             </div>
                         </div>
-                    </div>`;
+                    </div>
+                `;
                 container.innerHTML += cardHtml;
             });
         })
+        .catch(error => console.error('Error fetching trending movies:', error));
 }
 
-// function for retrieving trending tv series
+// fetch tv series
 function fetchTrendingTVSeries() {
     fetch(`https://api.themoviedb.org/3/trending/tv/week?api_key=${apiKey}`)
         .then(response => response.json())
         .then(data => {
             const series = data.results;
             const container = document.getElementById('trendingTVSeries');
-            container.innerHTML = ''; // clear content if any inside
+            container.innerHTML = ''; //clear 
 
             series.forEach(tvShow => {
                 const imageUrl = `https://image.tmdb.org/t/p/w500${tvShow.poster_path}`;
@@ -56,13 +59,14 @@ function fetchTrendingTVSeries() {
                 container.innerHTML += cardHtml;
             });
         })
+        .catch(error => console.error('Error fetching trending TV series:', error));
 }
 
-//scrolling for the moveis and tv shows
+// scroll functions
 function scrollContentLeft(containerId) {
     const container = document.getElementById(containerId);
     container.scrollBy({
-        left: -500,
+        left: -300,
         behavior: 'smooth'
     });
 }
@@ -70,10 +74,10 @@ function scrollContentLeft(containerId) {
 function scrollContentRight(containerId) {
     const container = document.getElementById(containerId);
     container.scrollBy({
-        left: 500, 
+        left: 300,
         behavior: 'smooth'
     });
 }
-//call the content to be displayed
+//call the functions
 fetchTrendingMovies();
 fetchTrendingTVSeries();
